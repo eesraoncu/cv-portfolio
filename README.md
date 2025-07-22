@@ -1,169 +1,90 @@
-# Esra Öncü - CV Portfolio Sitesi
+# Esra Oncu - CV Portfolio
 
-Modern, responsive ve etkileyici bir kişisel CV portfolio sitesi. React, TypeScript ve Tailwind CSS kullanılarak geliştirilmiştir.
+A modern, responsive, and visually impressive personal CV portfolio website built with React, TypeScript, and Tailwind CSS.
 
-## 🚀 Özellikler
+[**Live Demo / Deployed Site**](https://eesraoncu.github.io/cv-portfolio/)
 
-- **Modern Tasarım**: Gradient renkler ve modern UI/UX
-- **Responsive**: Mobil ve desktop uyumlu
-- **Animasyonlar**: Framer Motion ile smooth animasyonlar
-- **TypeScript**: Tip güvenliği
-- **Tailwind CSS**: Modern CSS framework
-- **SEO Optimized**: Arama motoru dostu
+## 🚀 Features
 
-## 📋 Bölümler
+- **Modern Design:** Gradient colors and clean UI/UX
+- **Responsive:** Mobile and desktop friendly
+- **Animations:** Smooth transitions with Framer Motion
+- **TypeScript:** Type-safe codebase
+- **Tailwind CSS:** Utility-first CSS framework
+- **SEO Optimized:** Search engine friendly
 
-1. **Hero Section**: Etkileyici giriş bölümü
-2. **Hakkımda**: Kişisel bilgiler ve hedefler
-3. **Deneyim**: Staj ve proje deneyimleri
-4. **Yetenekler**: Teknik yetenekler ve seviyeler
-5. **Projeler**: Geliştirilen projeler
-6. **İletişim**: İletişim formu ve bilgileri
+## 📋 Sections
 
-## 🛠️ Teknolojiler
+1. **Hero Section:** Eye-catching introduction
+2. **About:** Personal information and goals
+3. **Experience:** Internship and project experience
+4. **Skills:** Technical skills and levels
+5. **Projects:** Innovative projects and solutions
+6. **Volunteer Work:** Community and leadership experience
+7. **Contact:** Contact form and information
 
-- **React 18**: Modern React hooks ve functional components
-- **TypeScript**: Tip güvenliği ve daha iyi geliştirici deneyimi
+## 🛠️ Technologies Used
+
+- **React 18**: Modern React hooks and functional components
+- **TypeScript**: Type safety and better developer experience
 - **Tailwind CSS**: Utility-first CSS framework
-- **Framer Motion**: Animasyon kütüphanesi
-- **Lucide React**: Modern icon kütüphanesi
-- **React Router**: Sayfa yönlendirme
+- **Framer Motion**: Animation library
+- **Lucide React**: Modern icon library
+- **React Router**: Page routing
 
-## 🚀 Kurulum
+## 🌐 Demo
 
+[https://eesraoncu.github.io/cv-portfolio/](https://eesraoncu.github.io/cv-portfolio/)
+
+## ⚡ Getting Started
+
+### 1. Clone the repository
 ```bash
-# Projeyi klonlayın
 git clone https://github.com/eesraoncu/cv-portfolio.git
-
-# Proje dizinine gidin
 cd cv-portfolio
-
-# Bağımlılıkları yükleyin
-npm install
-
-# Geliştirme sunucusunu başlatın
-npm start
 ```
 
-## 📱 Responsive Tasarım
-
-- **Desktop**: 1200px ve üzeri
-- **Tablet**: 768px - 1199px
-- **Mobile**: 767px ve altı
-
-## 🎨 Tasarım Özellikleri
-
-- **Gradient Renkler**: Mavi-mor gradient teması
-- **Smooth Animasyonlar**: Sayfa geçişleri ve hover efektleri
-- **Modern Kartlar**: Gölge efektleri ve hover animasyonları
-- **İkonlar**: Lucide React ikonları
-- **Typography**: Modern font ailesi
-
-## 📊 Performans
-
-- **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
-- **Bundle Size**: Optimized build
-- **Loading Speed**: Fast initial load
-
-## 🔧 Geliştirme
-
+### 2. Install dependencies
 ```bash
-# Geliştirme modunda çalıştır
+npm install
+```
+
+### 3. Start the development server
+```bash
 npm start
+```
 
-# Production build
+The app will be available at [http://localhost:3000](http://localhost:3000)
+
+### 4. Build for production
+```bash
 npm run build
-
-# Test çalıştır
-npm test
-
-# Eject (dikkatli kullanın)
-npm run eject
 ```
 
-## 📁 Proje Yapısı
-
-```
-src/
-├── components/
-│   ├── Header.tsx
-│   ├── Hero.tsx
-│   ├── About.tsx
-│   ├── Experience.tsx
-│   ├── Skills.tsx
-│   ├── Projects.tsx
-│   ├── Contact.tsx
-│   └── Footer.tsx
-├── App.tsx
-├── index.tsx
-└── index.css
+### 5. Deploy to GitHub Pages
+```bash
+npm run deploy
 ```
 
-## 🎯 Özellikler
+## 📱 Responsive Design
+- **Desktop:** 1200px and above
+- **Tablet:** 768px - 1199px
+- **Mobile:** 767px and below
 
-### Header
-- Sticky navigation
-- Smooth scroll
-- Mobile responsive menu
-- Gradient logo
+## 🎨 Design Highlights
+- **Gradient Colors:** Blue-purple gradient theme
+- **Smooth Animations:** Page transitions and hover effects
+- **Modern Cards:** Shadow effects and hover animations
+- **Icons:** Lucide React icons
+- **Typography:** Modern font family
 
-### Hero Section
-- Animated background
-- Social media links
-- Call-to-action buttons
-- Professional introduction
+## 📊 Performance
+- **Lighthouse Score:** 95+ (Performance, Accessibility, Best Practices, SEO)
+- **Bundle Size:** Optimized build
+- **Loading Speed:** Fast initial load
 
-### About Section
-- Personal information
-- Education details
-- Goals and aspirations
-- Professional interests
+## 🤝 Contributing
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
 
-### Experience Section
-- Internship experience
-- Project highlights
-- Technology stack
-- Future goals
-
-### Skills Section
-- Technical skills with progress bars
-- Soft skills
-- Learning path
-- Skill categories
-
-### Projects Section
-- Project showcase
-- Technology tags
-- GitHub links
-- Live demo links
-
-### Contact Section
-- Contact form
-- Social media links
-- Contact information
-- Working hours
-
-## 🌟 Öne Çıkan Özellikler
-
-1. **Modern Animasyonlar**: Framer Motion ile smooth animasyonlar
-2. **Responsive Tasarım**: Tüm cihazlarda mükemmel görünüm
-3. **TypeScript**: Tip güvenliği ve daha iyi kod kalitesi
-4. **Tailwind CSS**: Hızlı ve modern styling
-5. **SEO Optimized**: Arama motoru dostu yapı
-6. **Accessibility**: WCAG standartlarına uygun
-7. **Performance**: Optimized bundle ve fast loading
-
-## 📞 İletişim
-
-- **GitHub**: [@eesraoncu](https://github.com/eesraoncu)
-- **LinkedIn**: [@eesraoncu](http://linkedin.com/in/eesraoncu)
-- **Email**: eesraoncu@gmail.com
-
-## 📄 Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır.
-
----
-
-**Esra Öncü** - Yazılım Mühendisliği Öğrencisi  
-*Modern web teknolojileri tutkunu* 
+## 📄 License
+This project is open source and available under the [MIT License](LICENSE). 
