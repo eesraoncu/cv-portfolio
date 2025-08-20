@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark theme base */
+.dark {
+  --bg-start: #1b124b; /* midnight-900 */
+  --bg-end: #271a6b;   /* midnight-800 */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: linear-gradient(135deg, #fef3c7 0%, #fdf4ff 50%, #ecfdf5 100%);
+    min-height: 100vh;
+  }
+
+  /* Dark mode global background and text color */
+  .dark body {
+    background: linear-gradient(135deg, var(--bg-start) 0%, #201a5a 50%, var(--bg-end) 100%);
+    color: #e5e7eb; /* text-gray-200 */
+  }
+
+  /* Force all sections to use dark gradient when dark mode is active */
+  .dark section {
+    background: linear-gradient(135deg, var(--bg-start) 0%, #201a5a 50%, var(--bg-end) 100%) !important;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Dark mode glass adjustment */
+  .dark .glass-effect {
+    background: rgba(17, 24, 39, 0.45); /* slate-900 with opacity */
+    border: 1px solid rgba(148, 163, 184, 0.25); /* slate-400 */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    color: #e5e7eb; /* text-gray-200 */
+  }
+
+  /* Improve contrast for texts inside cards on dark mode */
+  .dark .glass-effect h1,
+  .dark .glass-effect h2,
+  .dark .glass-effect h3,
+  .dark .glass-effect h4,
+  .dark .glass-effect h5,
+  .dark .glass-effect h6 {
+    color: #f3f4f6; /* text-gray-100 */
+  }
+
+  .dark .glass-effect p,
+  .dark .glass-effect li,
+  .dark .glass-effect span,
+  .dark .glass-effect label {
+    color: #cbd5e1; /* text-gray-300 */
+  }
+
+  .dark .glass-effect .text-gray-600 { color: #cbd5e1 !important; }
+  .dark .glass-effect .text-gray-700 { color: #e5e7eb !important; }
+  .dark .glass-effect .text-gray-900 { color: #f3f4f6 !important; }
+  
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, #d97706 0%, #d946ef 50%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .skill-badge {
+    @apply px-3 py-1 rounded-full text-sm font-medium border;
+  }
+  
+  .timeline-item {
+    @apply relative pl-8 pb-8;
+  }
+  
+  .timeline-item::before {
+    content: '';
+    @apply absolute left-0 top-2 w-3 h-3 bg-gradient-to-r from-accent-500 to-primary-500 rounded-full;
+  }
+  
+  .timeline-item::after {
+    content: '';
+    @apply absolute left-1.5 top-5 w-0.5 h-full bg-gradient-to-b from-accent-200 to-primary-200;
+  }
+  
+  .timeline-item:last-child::after {
+    display: none;
+  }
+} 
