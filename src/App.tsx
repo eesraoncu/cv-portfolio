@@ -8,6 +8,7 @@ import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import ScrollProgressBar from './components/ScrollProgressBar';
 
 function App() {
   const [isDark, setIsDark] = useState<boolean>(() => {
@@ -26,8 +27,10 @@ function App() {
       localStorage.setItem('theme', 'light');
     }
   }, [isDark]);
+
   return (
     <div className={`min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 dark:bg-none`}>
+      <ScrollProgressBar />
       <Header onToggleTheme={() => setIsDark(v => !v)} isDark={isDark} />
       <main>
         <Hero />
@@ -42,4 +45,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;

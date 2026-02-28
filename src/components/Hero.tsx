@@ -1,349 +1,392 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Download } from 'lucide-react';
+import { Github, Linkedin, Mail, Download, ArrowRight, Terminal, Code2, GitBranch, Cpu, FileText, User } from 'lucide-react';
 import { useI18n } from '../i18n';
-
-// Profil fotoğrafı import'u (alternatif yöntem)
-// import profilePhoto from '/profil.jpg';
 import profilePhoto from '../assets/profil.jpg';
-// import cvPdf from '../assets/Esra_Oncu-CV.pdf';
+
+const TYPING_STRINGS = [
+  'Full Stack Developer',
+  'Java & Spring Boot',
+  'React & TypeScript',
+  'Backend Engineer',
+];
+
+const TypewriterText: React.FC = () => {
+  const [idx, setIdx] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const target = TYPING_STRINGS[idx];
+    let timeout: ReturnType<typeof setTimeout>;
+
+    if (!deleting && displayed.length < target.length) {
+      timeout = setTimeout(() => setDisplayed(target.slice(0, displayed.length + 1)), 60);
+    } else if (!deleting && displayed.length === target.length) {
+      timeout = setTimeout(() => setDeleting(true), 1800);
+    } else if (deleting && displayed.length > 0) {
+      timeout = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 35);
+    } else if (deleting && displayed.length === 0) {
+      setDeleting(false);
+      setIdx((i) => (i + 1) % TYPING_STRINGS.length);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [displayed, deleting, idx]);
+
+  return (
+    <span className="text-blue-600 dark:text-blue-400">
+      {displayed}
+      <span className="animate-pulse">|</span>
+    </span>
+  );
+};
+
+/* ── Decorative right-side card ── */
+const codeLines = [
+  { indent: 0, token: 'public class', name: 'EsraOncu', ext: 'implements Developer {' },
+  { indent: 1, token: 'List<String>', name: 'stack', ext: '= List.of("Java", "Spring", "React");' },
+  { indent: 1, token: 'double', name: 'gpa', ext: '= 3.32;' },
+  { indent: 1, token: 'String', name: 'status', ext: '= "Open to opportunities";' },
+  { indent: 0, token: '', name: '', ext: '' },
+  { indent: 1, token: 'public Product', name: 'build', ext: '(Idea idea) {' },
+  { indent: 2, token: 'return', name: '', ext: 'cleanCode + passion;' },
+  { indent: 1, token: '', name: '}', ext: '' },
+  { indent: 0, token: '}', name: '', ext: '' },
+];
+
+const statCards = [
+  { icon: GitBranch, label: 'Erasmus+', sub: 'Białystok, PL' },
+  { icon: Cpu, label: 'TÜBİTAK', sub: '2209-B' },
+  { icon: Terminal, label: 'Teknofest', sub: 'Finalist' },
+];
+
+const aboutItems = [
+  { icon: User, label: 'Name', value: 'Esra Öncü' },
+  { icon: Code2, label: 'Role', value: 'Software Engineer' },
+  { icon: GitBranch, label: 'Education', value: 'Mehmet Akif Ersoy Uni.' },
+  { icon: Cpu, label: 'GPA', value: '3.32 / 4.0' },
+  { icon: Terminal, label: 'Focus', value: 'Java, Spring Boot, React' },
+  { icon: FileText, label: 'Research', value: 'TÜBİTAK 2209-B' },
+];
+
+const HeroCard: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'about' | 'code'>('about');
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.7, delay: 0.3 }}
+      className="relative"
+    >
+      {/* Card */}
+      <div className="rounded-2xl border border-slate-200 dark:border-slate-700/60 bg-slate-950 shadow-2xl overflow-hidden">
+        {/* Mac-style top bar + Tabs */}
+        <div className="bg-slate-900 border-b border-slate-700/50">
+          <div className="flex items-center gap-2 px-4 py-3">
+            <span className="w-3 h-3 rounded-full bg-red-500/80" />
+            <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
+            <span className="w-3 h-3 rounded-full bg-green-500/80" />
+          </div>
+          {/* Tabs */}
+          <div className="flex px-4 gap-1 -mb-px">
+            <button
+              onClick={() => setActiveTab('about')}
+              className={`flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-t-lg transition-all duration-200 ${activeTab === 'about'
+                  ? 'bg-slate-950 text-blue-400 border border-slate-700/50 border-b-slate-950'
+                  : 'text-slate-500 hover:text-slate-300'
+                }`}
+            >
+              <User size={11} />
+              README.md
+            </button>
+            <button
+              onClick={() => setActiveTab('code')}
+              className={`flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-t-lg transition-all duration-200 ${activeTab === 'code'
+                  ? 'bg-slate-950 text-blue-400 border border-slate-700/50 border-b-slate-950'
+                  : 'text-slate-500 hover:text-slate-300'
+                }`}
+            >
+              <Code2 size={11} />
+              EsraOncu.java
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        <div className="min-h-[280px]">
+          {activeTab === 'about' ? (
+            <motion.div
+              key="about"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="p-6 space-y-3"
+            >
+              {aboutItems.map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 + i * 0.06 }}
+                  className="flex items-center gap-3 group"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
+                    <item.icon size={14} className="text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[10px] uppercase tracking-wider text-slate-500 block leading-none">{item.label}</span>
+                    <span className="text-sm text-slate-200 font-medium truncate block">{item.value}</span>
+                  </div>
+                </motion.div>
+              ))}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="pt-3 mt-3 border-t border-slate-800 flex items-center gap-2"
+              >
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                <span className="text-xs text-green-400 font-medium">Open to opportunities</span>
+              </motion.div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="code"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="p-6 font-mono text-sm leading-7 select-none"
+            >
+              {codeLines.map((line, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 + i * 0.05 }}
+                  className="flex"
+                >
+                  <span className="w-6 text-slate-600 text-xs mr-4 text-right select-none">{line.name || line.ext || line.token ? i + 1 : ''}</span>
+                  <span style={{ paddingLeft: `${line.indent * 16}px` }} className="flex gap-1.5 flex-wrap">
+                    {line.token && (
+                      <span className={
+                        ['public class', 'public Product'].includes(line.token) ? 'text-violet-400' :
+                          ['List<String>', 'double', 'String'].includes(line.token) ? 'text-blue-400' :
+                            line.token === 'return' ? 'text-pink-400' :
+                              'text-slate-300'
+                      }>{line.token}</span>
+                    )}
+                    {line.name && <span className={line.token === 'public class' ? 'text-yellow-300' : 'text-slate-200'}>{line.name}</span>}
+                    {line.ext && <span className="text-slate-400">{line.ext}</span>}
+                  </span>
+                </motion.div>
+              ))}
+              {/* blinking cursor at end */}
+              <div className="flex mt-1">
+                <span className="w-6 text-slate-600 text-xs mr-4 text-right">{codeLines.length + 1}</span>
+                <span className="inline-block w-2 h-4 bg-blue-500 animate-pulse rounded-sm ml-0" />
+              </div>
+            </motion.div>
+          )}
+        </div>
+      </div>
+
+      {/* Floating stat pills */}
+      {statCards.map((s, i) => (
+        <motion.div
+          key={s.label}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9 + i * 0.12 }}
+          className={`absolute flex items-center gap-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 shadow-lg ${i === 0 ? '-top-5 -left-8' :
+            i === 1 ? '-bottom-5 left-1/2 -translate-x-1/2' :
+              '-top-5 -right-6'
+            }`}
+        >
+          <div className="w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center">
+            <s.icon size={13} className="text-blue-600" />
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-slate-800 dark:text-slate-200 leading-none">{s.label}</p>
+            <p className="text-[9px] text-slate-400 mt-0.5">{s.sub}</p>
+          </div>
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
 
 const Hero: React.FC = () => {
   const { t } = useI18n();
+  const isTr = t('nav.home') === 'Ana Sayfa';
+
   const socialLinks = [
-    {
-      name: 'GitHub',
-      url: 'https://github.com/eesraoncu',
-      icon: Github,
-      color: 'hover:text-gray-800'
-    },
-    {
-      name: 'LinkedIn',
-      url: 'https://linkedin.com/in/eesraoncu',
-      icon: Linkedin,
-      color: 'hover:text-blue-600'
-    },
-    {
-      name: 'Email',
-      url: 'mailto:eesraoncu@gmail.com',
-      icon: Mail,
-      color: 'hover:text-red-600'
-    }
+    { name: 'GitHub', url: 'https://github.com/eesraoncu', icon: Github },
+    { name: 'LinkedIn', url: 'https://linkedin.com/in/eesraoncu', icon: Linkedin },
+    { name: 'Email', url: 'mailto:eesraoncu@gmail.com', icon: Mail },
   ];
 
-  const handleCVDownload = () => {
-    // CV indirme fonksiyonu
-    const link = document.createElement('a');
-    link.href = '/Esra_Oncu_CV.pdf'; // public klasöründen erişim
-    link.download = 'Esra_Oncu_CV.pdf';
-    link.click();
-  };
+  const techStack = ['Java', 'Spring Boot', 'React', 'TypeScript', 'PostgreSQL'];
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Enhanced Background decoration */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 dark:from-[var(--bg-start)] dark:via-[#201a5a] dark:to-[var(--bg-end)]"></div>
-      
-      {/* Animated Background Elements */}
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          rotate: [0, 180, 360],
+    <section id="home" className="min-h-screen flex flex-col justify-center bg-white dark:bg-gray-950 pt-16 relative overflow-hidden">
+      {/* Grid background — more visible */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(99,102,241,0.07) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(99,102,241,0.07) 1px, transparent 1px)
+          `,
+          backgroundSize: '48px 48px',
         }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        className="absolute top-20 left-20 w-96 h-96 bg-gradient-to-r from-purple-400/30 to-pink-400/30 rounded-full mix-blend-multiply filter blur-xl opacity-70"
       />
-      <motion.div
-        animate={{
-          scale: [1.2, 1, 1.2],
-          rotate: [360, 180, 0],
+      {/* Radial fade from center */}
+      <div
+        className="dark:hidden absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 80% 60% at 30% 50%, transparent 40%, rgba(255,255,255,0.85) 100%)',
         }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/30 to-orange-400/30 rounded-full mix-blend-multiply filter blur-xl opacity-70"
       />
-      <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          rotate: [0, 360, 0],
-        }}
-        transition={{
-          duration: 30,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        className="absolute -bottom-8 left-40 w-96 h-96 bg-gradient-to-r from-orange-400/30 to-purple-400/30 rounded-full mix-blend-multiply filter blur-xl opacity-70"
+      <div className="dark:hidden absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 80% 60% at 30% 50%, transparent 40%, rgba(255,255,255,0.9) 100%)' }}
       />
 
-      {/* Decorative Elements - Flowers and Stars */}
-      <motion.div
-        animate={{
-          y: [0, -10, 0],
-          rotate: [0, 5, -5, 0],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute top-32 left-10 text-4xl opacity-60"
-      >
-        🌸
-      </motion.div>
-      
-      <motion.div
-        animate={{
-          y: [0, 15, 0],
-          rotate: [0, -10, 10, 0],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute top-48 right-16 text-3xl opacity-70"
-      >
-        🌺
-      </motion.div>
-      
-      <motion.div
-        animate={{
-          y: [0, -8, 0],
-          rotate: [0, 15, -15, 0],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute bottom-32 left-20 text-2xl opacity-50"
-      >
-        🌹
-      </motion.div>
-      
-      <motion.div
-        animate={{
-          y: [0, 12, 0],
-          rotate: [0, -20, 20, 0],
-        }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute bottom-40 right-32 text-3xl opacity-60"
-      >
-        🌻
-      </motion.div>
+      <div className="max-w-6xl mx-auto px-6 lg:px-8 w-full relative z-10">
+        {/* Two-column layout */}
+        <div className="py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-      {/* Stars */}
-      <motion.div
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.3, 1, 0.3],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute top-16 right-1/3 text-2xl"
-      >
-        ⭐
-      </motion.div>
-      
-      <motion.div
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.5, 1, 0.5],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute top-64 left-1/4 text-xl"
-      >
-        ✨
-      </motion.div>
-      
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.4, 1, 0.4],
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        className="absolute bottom-20 left-1/3 text-2xl"
-      >
-        🌟
-      </motion.div>
-
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="space-y-16"
-        >
-          {/* Enhanced Profile Image - Enlarged */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="mx-auto w-64 h-64 rounded-full overflow-hidden border-8 border-white shadow-2xl relative dark:border-midnight-400"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full p-1">
-              <div className="w-full h-full rounded-full overflow-hidden bg-white">
+          {/* ─── LEFT: Content ─── */}
+          <div className="space-y-8">
+            {/* Top row: avatar + status */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex items-center gap-4"
+            >
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-slate-100 dark:border-slate-800 shadow-sm flex-shrink-0">
                 <img
-                  src={profilePhoto} // Profil fotoğrafı - assets klasöründen import edildi
+                  src={profilePhoto}
                   alt="Esra Öncü"
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    console.log('Profil fotoğrafı yüklenemedi, varsayılan görsel kullanılıyor');
-                    e.currentTarget.src = "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80";
-                  }}
+                  onError={(e) => { e.currentTarget.src = 'https://ui-avatars.com/api/?name=Esra+Oncu&background=2563eb&color=fff&size=96'; }}
                 />
               </div>
-            </div>
-            
-            {/* Floating Elements */}
-            <motion.div
-              animate={{
-                y: [0, -15, 0],
-                rotate: [0, 360, 0],
-              }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute -top-6 -right-6 w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center shadow-lg"
-            >
-              <span className="text-white font-bold text-lg">🚀</span>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-full">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                <span className="text-xs font-semibold text-green-700 dark:text-green-400">
+                  {isTr ? 'Fırsatlara açığım' : 'Open to opportunities'}
+                </span>
+              </div>
             </motion.div>
-            
+
+            {/* Main heading */}
             <motion.div
-              animate={{
-                y: [0, 15, 0],
-                rotate: [360, 0, 360],
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute -bottom-6 -left-6 w-14 h-14 bg-gradient-to-r from-pink-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="space-y-3"
             >
-              <span className="text-white font-bold text-sm">💻</span>
+              <h1 className="text-6xl lg:text-7xl font-bold text-slate-900 dark:text-white tracking-tight leading-[1.05]">
+                Esra<br />Öncü
+              </h1>
+              <div className="text-2xl lg:text-3xl font-light text-slate-400 dark:text-slate-500 h-9 flex items-center">
+                <TypewriterText />
+              </div>
             </motion.div>
-          </motion.div>
 
-          {/* Enhanced Name and Title */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="space-y-8"
-          >
-            <h1 className="text-7xl md:text-9xl font-bold text-gray-900 dark:text-gray-100">
-              Esra <span className="text-purple-600">Öncü</span>
-            </h1>
-            <h2 className="text-4xl md:text-5xl text-gray-700 font-medium dark:text-gray-200">
-              Full Stack Developer
-            </h2>
-            <p className="text-2xl text-gray-500 max-w-5xl mx-auto leading-relaxed dark:text-gray-300">{t('hero.tagline')}</p>
-          </motion.div>
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25 }}
+              className="text-base text-slate-500 dark:text-slate-400 leading-relaxed max-w-md"
+            >
+              {t('hero.tagline')}
+            </motion.p>
 
-          {/* Enhanced Social Links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="flex justify-center space-x-10"
-          >
-            {socialLinks.map((link) => (
-              <motion.a
-                key={link.name}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.2, y: -5 }}
-                whileTap={{ scale: 0.95 }}
-                className={`p-5 rounded-3xl bg-gradient-to-r from-purple-50 to-pink-50 shadow-xl ${link.color} transition-all duration-300 hover:shadow-2xl border border-purple-200 dark:bg-gradient-to-r dark:from-pink-500/20 dark:to-purple-500/20 dark:text-gray-100 dark:border dark:border-pink-400`}
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="flex flex-wrap items-center gap-4"
+            >
+              <a href="#projects" className="btn-primary group">
+                {isTr ? 'Projelere Bak' : 'View Projects'}
+                <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+              </a>
+              <a href="#contact" className="btn-outline">
+                {t('hero.contactMe')}
+              </a>
+              <a
+                href={`${process.env.PUBLIC_URL || ''}/Esra_Oncu_CV1.pdf`}
+                download="Esra_Oncu_CV1.pdf"
+                className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
               >
-                <link.icon size={36} />
-              </motion.a>
-            ))}
-          </motion.div>
+                <Download size={14} />
+                {t('hero.downloadCV')}
+              </a>
+            </motion.div>
 
-          {/* Enhanced CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="flex flex-col sm:flex-row gap-8 justify-center items-center"
-          >
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => {
-                const link = document.createElement('a');
-                link.href = process.env.PUBLIC_URL + '/Esra_Oncu_CV.pdf';
-                link.download ='Esra_Oncu_CV.pdf';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-              }}
-              className="px-12 py-5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-600 rounded-3xl font-bold border border-purple-200 shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center space-x-4 text-xl dark:bg-gradient-to-r dark:from-pink-500/20 dark:to-purple-500/20 dark:text-gray-100 dark:border dark:border-pink-400"
+            {/* Tech stack chips */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-wrap items-center gap-2"
             >
-              <Download size={28} />
-              <span>{t('hero.downloadCV')}</span>
-            </motion.button>
-            <motion.a
-              href="#contact"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-12 py-5 bg-gradient-to-r from-purple-50 to-pink-50 text-purple-600 rounded-3xl font-bold border border-purple-200 transition-all duration-300 flex items-center space-x-4 text-xl shadow-xl hover:shadow-2xl dark:bg-gradient-to-r dark:from-pink-500/20 dark:to-purple-500/20 dark:text-gray-100 dark:border dark:border-pink-400"
+              <span className="text-xs text-slate-300 dark:text-slate-600 mr-1">
+                {isTr ? 'Çalıştığım teknolojiler:' : 'Technologies:'}
+              </span>
+              {techStack.map((tech, i) => (
+                <motion.span
+                  key={tech}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 + i * 0.07 }}
+                  className="tech-tag"
+                >
+                  {tech}
+                </motion.span>
+              ))}
+            </motion.div>
+
+            {/* Social links */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.65 }}
+              className="flex items-center gap-5 pt-4 border-t border-slate-100 dark:border-slate-800"
             >
-              <Mail size={28} />
-              <span>{t('hero.contactMe')}</span>
-            </motion.a>
-          </motion.div>
-        </motion.div>
+              {socialLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-xs font-medium text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                >
+                  <link.icon size={13} />
+                  {link.name}
+                </a>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* ─── RIGHT: Decorative card ─── */}
+          <div className="hidden lg:flex items-center justify-center">
+            <div className="relative w-full max-w-md mx-auto mt-10">
+              <HeroCard />
+            </div>
+          </div>
+
+        </div>
       </div>
-
-      {/* Enhanced Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-      >
-        <motion.div
-          animate={{ y: [0, 15, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-8 h-12 border-3 border-purple-400 rounded-full flex justify-center"
-        >
-          <motion.div
-            animate={{ y: [0, 20, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-2 h-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-3"
-          />
-        </motion.div>
-      </motion.div>
     </section>
   );
 };
 
-export default Hero; 
+export default Hero;

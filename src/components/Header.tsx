@@ -1,164 +1,133 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useI18n } from '../i18n';
 
-type HeaderProps = {
-  onToggleTheme?: () => void;
-  isDark?: boolean;
-};
+type HeaderProps = { onToggleTheme?: () => void; isDark?: boolean; };
 
 const Header: React.FC<HeaderProps> = ({ onToggleTheme, isDark }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { t, toggleLang, lang } = useI18n();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const { t, toggleLang, lang } = useI18n();
-
   const navItems = [
-    { nameKey: 'nav.home', href: '#home' },
     { nameKey: 'nav.about', href: '#about' },
     { nameKey: 'nav.experience', href: '#experience' },
     { nameKey: 'nav.skills', href: '#skills' },
     { nameKey: 'nav.projects', href: '#projects' },
-    { nameKey: 'nav.contact', href: '#contact' }
+    { nameKey: 'nav.contact', href: '#contact' },
   ];
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const scrollTo = (href: string) => {
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
     setIsMenuOpen(false);
   };
 
   return (
     <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/95 dark:bg-dark-800/90 backdrop-blur-md shadow-xl border-b border-purple-200'
+      initial={{ y: -60, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+          ? 'bg-white/95 dark:bg-gray-950/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm'
           : 'bg-transparent'
-      }`}
+        }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo/Name */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center space-x-3"
+      <div className="max-w-6xl mx-auto px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <a
+            href="#home"
+            onClick={e => { e.preventDefault(); scrollTo('#home'); }}
+            className="flex items-center gap-2 group"
           >
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Esra <span className="text-purple-600">Öncü</span>
-            </h1>
-          </motion.div>
+            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm font-mono">EÖ</span>
+            </div>
+            <span className="font-semibold text-slate-900 dark:text-white text-sm">
+              Esra Öncü
+            </span>
+          </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item, index) => (
-              <motion.button
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => (
+              <button
                 key={item.nameKey}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -2 }}
-                onClick={() => scrollToSection(item.href)}
-                className="text-xl font-semibold text-gray-700 hover:text-purple-600 transition-all duration-300 relative group dark:text-gray-100 dark:hover:text-pink-400"
+                onClick={() => scrollTo(item.href)}
+                className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 rounded-lg transition-all duration-200"
               >
                 {t(item.nameKey)}
-                <motion.div
-                  className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300"
-                  whileHover={{ width: '100%' }}
-                />
-              </motion.button>
+              </button>
             ))}
           </nav>
-          <div className="hidden md:flex items-center space-x-3">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+
+          {/* Controls */}
+          <div className="hidden md:flex items-center gap-2">
+            <button
               onClick={toggleLang}
-              className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-dark-700 text-gray-800 dark:text-white border border-purple-200 shadow hover:shadow-md transition"
+              className="px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-lg hover:border-blue-400 hover:text-blue-600 transition-all duration-200"
             >
               {lang === 'tr' ? 'EN' : 'TR'}
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            </button>
+            <button
               onClick={onToggleTheme}
-              className="p-3 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              className="p-2 text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200"
             >
-              {isDark ? <Sun size={18} /> : <Moon size={18} />}
-            </motion.button>
+              {isDark ? <Sun size={17} /> : <Moon size={17} />}
+            </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+          {/* Mobile toggle */}
+          <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-3 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+            className="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </motion.button>
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
-
-        {/* Mobile Navigation */}
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{
-            opacity: isMenuOpen ? 1 : 0,
-            height: isMenuOpen ? 'auto' : 0
-          }}
-          transition={{ duration: 0.3 }}
-          className="md:hidden overflow-hidden"
-        >
-          <div className="py-6 space-y-4">
-            {navItems.map((item, index) => (
-              <motion.button
-                key={item.nameKey}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: isMenuOpen ? 1 : 0, x: isMenuOpen ? 0 : -20 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left text-xl font-semibold text-gray-700 hover:text-purple-600 transition-all duration-300 py-3 px-4 rounded-2xl hover:bg-purple-50 dark:text-gray-100 dark:hover:text-pink-400 dark:hover:bg-pink-500/20"
-              >
-                {t(item.nameKey)}
-              </motion.button>
-            ))}
-            <div className="pt-2">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={toggleLang}
-                className="w-full mb-3 p-3 rounded-2xl bg-white/90 text-gray-900 border border-purple-200 shadow hover:shadow-md transition"
-              >
-                {lang === 'tr' ? 'Switch to English' : 'Türkçe’ye geç'}
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => { onToggleTheme && onToggleTheme(); }}
-                className="w-full p-3 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg hover:shadow-xl transition-all duration-300"
-              >
-                {isDark ? 'Light' : 'Dark'} Mode
-              </motion.button>
-            </div>
-          </div>
-        </motion.div>
       </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-gray-950"
+          >
+            <div className="px-6 py-4 space-y-1">
+              {navItems.map((item) => (
+                <button
+                  key={item.nameKey}
+                  onClick={() => scrollTo(item.href)}
+                  className="block w-full text-left px-3 py-2.5 text-sm font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg transition-all"
+                >
+                  {t(item.nameKey)}
+                </button>
+              ))}
+              <div className="flex gap-2 pt-2">
+                <button onClick={toggleLang} className="flex-1 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-lg">
+                  {lang === 'tr' ? 'Switch to EN' : 'TR\'ye geç'}
+                </button>
+                <button onClick={() => { onToggleTheme && onToggleTheme(); }} className="flex-1 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 rounded-lg">
+                  {isDark ? 'Light Mode' : 'Dark Mode'}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };
 
-export default Header; 
+export default Header;
