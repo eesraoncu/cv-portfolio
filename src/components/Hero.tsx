@@ -94,8 +94,8 @@ const HeroCard: React.FC = () => {
             <button
               onClick={() => setActiveTab('about')}
               className={`flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-t-lg transition-all duration-200 ${activeTab === 'about'
-                  ? 'bg-slate-950 text-blue-400 border border-slate-700/50 border-b-slate-950'
-                  : 'text-slate-500 hover:text-slate-300'
+                ? 'bg-slate-950 text-blue-400 border border-slate-700/50 border-b-slate-950'
+                : 'text-slate-500 hover:text-slate-300'
                 }`}
             >
               <User size={11} />
@@ -104,8 +104,8 @@ const HeroCard: React.FC = () => {
             <button
               onClick={() => setActiveTab('code')}
               className={`flex items-center gap-1.5 px-4 py-2 text-xs font-medium rounded-t-lg transition-all duration-200 ${activeTab === 'code'
-                  ? 'bg-slate-950 text-blue-400 border border-slate-700/50 border-b-slate-950'
-                  : 'text-slate-500 hover:text-slate-300'
+                ? 'bg-slate-950 text-blue-400 border border-slate-700/50 border-b-slate-950'
+                : 'text-slate-500 hover:text-slate-300'
                 }`}
             >
               <Code2 size={11} />
@@ -377,7 +377,7 @@ const Hero: React.FC = () => {
           </div>
 
           {/* ─── RIGHT: Decorative card ─── */}
-          <div className="hidden lg:flex items-center justify-center">
+          <div className="flex items-center justify-center">
             <div className="relative w-full max-w-md mx-auto mt-10">
               <HeroCard />
             </div>
